@@ -1,4 +1,4 @@
-public void insert(int data){
+public void priorityQueueInsert(int data){
    int i =0;
 
    if(!isFull()){
