@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void Reverseorder(int n)
+void primeNumbersReversed(int n)
 {
 	// Create a boolean array "prime[0..n]" and
 	// initialize all entries it as true. A value
