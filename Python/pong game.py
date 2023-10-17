@@ -1,5 +1,12 @@
-#importing turtle module
+'''
+Key Bindings :
+    1st Player - "W" to move Up
+                "S" to move Down
+    2nd Player - "Up Arrow" to move up
+                "Down Arrorw" to move Down
+'''
 
+#importing turtle module
 import turtle
 
 #for icon
