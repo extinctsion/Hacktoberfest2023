@@ -1,6 +1,13 @@
 # HacktoberFest 2023 `OPEN FIRST` Pull Request 🎉
 ![HacktoberFest 2023](https://github.com/extinctsion/Hacktoberfest2023)
 
+<u>##BEWARE</u>
+#DO NOT PUSH YOUR CODE IF YOUR PR INCLUDES -
+.Just adding your names in the contribution list.
+.Plain DSA solutions.
+.Any quotes/ interview questions related stuffs.
+
+The system will automaticall exclude your PR and mark it excluded.
 
 ## This Project Is Perfect For Your First Pull Request
 
