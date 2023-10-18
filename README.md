@@ -4,10 +4,10 @@
 ## BEWARE
 
 # DO NOT PUSH YOUR CODE IF YOUR PR INCLUDES -
-
-** Just adding your names in the contribution list.**
-** Plain DSA solutions.**
-** Any quotes/ interview questions related stuffs.**
+<br>
+** Just adding your names in the contribution list.**<br>
+** Plain DSA solutions.**<br>
+** Any quotes/ interview questions related stuffs.**<br>
 
 The system will automaticall exclude your PR and mark it excluded.
 
