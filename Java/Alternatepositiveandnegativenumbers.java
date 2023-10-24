@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.plaf.nimbus.State;
 
@@ -43,26 +44,43 @@ while (j < neg.size()) {
 
 
 
+// Second Approach
+public class Solution {
+public List<Integer> reArrangeArray(int[] arr){
 
-class Solution {
-public:
-    vector<int> rearrangeArray(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> ans, neg, pos;
-        for(auto num : nums){
+        int n = arr.length;
+        List<Integer> ans = new ArrayList<>();
+        List<Integer> neg = new ArrayList<>();
+        List<Integer> pos = new ArrayList();
+        for(int num : arr){
             if(num > 0){
-                pos.push_back(num);
+                pos.add(num);
             }
             else if(num < 0){
-                neg.push_back(num);
+                neg.add(num);
             }
         }
-        for(int i=0; i<neg.size(); i++){
-            ans.push_back(pos[i]);
-            ans.push_back(neg[i]);
+          while (i < neg.size() && i < pos.size()) {
+            ans.add(pos.get(i));
+            ans.add(neg.get(i));
+            i++;
         }
+
+        // Add any remaining positive numbers (if any)
+        while (i < pos.size()) {
+            ans.add(pos.get(i));
+            i++;
+        }
+
+        // Add any remaining negative numbers (if any)
+        while (i < neg.size()) {
+            ans.add(neg.get(i));
+            i++;
+        }
+
         return ans;
     }
+
 
     //
     public static void main(String[] args){
@@ -71,4 +89,4 @@ public:
         rearrange(arr, n);
         System.out.println(Arrays.toString(arr));
     }
-};
+}
