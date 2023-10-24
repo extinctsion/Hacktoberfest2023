@@ -39,23 +39,8 @@ public class Commonelements {
         return result;
     }
 
-    public static void main(String[] args) {
-        int[] A = {1, 5, 10, 20, 40, 80};
-        int[] B = {6, 7, 20, 80, 100};
-        int[] C = {3, 4, 15, 20, 30, 70, 80, 120};
-        int n1 = A.length;
-        int n2 = B.length;
-        int n3 = C.length;
-        Commonelements obj = new Commonelements();
-        ArrayList<Integer> result = obj.commonElements(A, B, C, n1, n2, n3);
-        System.out.println(result);
-    }
-}
-
-
-----------------------------------------------------------------------------------------------------------------------
-
-    ArrayList<Integer> set=new ArrayList<>();
+    public ArrayList<Integer> findCommonElements(int[] A, int[] B, int[] C) {
+    ArrayList<Integer> set = new ArrayList<>();
         int i=0,j=0,k=0;
         while(i<n1 && j<n2 && k<n3){
             if(A[i]==B[j] && B[j]==C[k]){
@@ -71,3 +56,20 @@ public class Commonelements {
             
         }
         return set;
+    }
+
+    public static void main(String[] args) {
+        int[] A = {1, 5, 10, 20, 40, 80};
+        int[] B = {6, 7, 20, 80, 100};
+        int[] C = {3, 4, 15, 20, 30, 70, 80, 120};
+        int n1 = A.length;
+        int n2 = B.length;
+        int n3 = C.length;
+        Commonelements obj = new Commonelements();
+        ArrayList<Integer> result = obj.commonElements(A, B, C, n1, n2, n3);
+        System.out.println(result);
+    }
+
+
+
+}

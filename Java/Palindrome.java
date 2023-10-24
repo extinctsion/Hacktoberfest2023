@@ -16,7 +16,7 @@ public class Palindrome {
             System.out.println("Middle Character: " + middleCharacter);
         }
     }    
-}
+
 public static boolean Palindrome(String str) {
     int left = 0;
     int right = str.length() - 1;
@@ -53,4 +53,5 @@ public static char findMiddleCharacter(String str) {
 
     // If the length is even, the middle character is at the (middleIndex - 1) index
     return str.charAt(middleIndex - 1);
+}
 }
