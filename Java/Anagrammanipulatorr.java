@@ -1,3 +1,5 @@
+package Java;
+
 import java.util.Arrays;
 
 public class Anagrammanipulatorr {
