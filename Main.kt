@@ -1,22 +1,23 @@
-fun bubbleSort(numbers: IntArray) {
-    for (pass in 0 until (numbers.size - 1)) {
-        // A single pass of bubble sort
-        for (currentPosition in 0 until (numbers.size - 1)) {
-            // This is a single step
-            if (numbers[currentPosition] > numbers[currentPosition + 1]) {
-                val tmp = numbers[currentPosition]
-                numbers[currentPosition] = numbers[currentPosition + 1]
-                numbers[currentPosition + 1] = tmp
-            }
+fun insertionSort(arr: IntArray) {
+    for (i in 1 until arr.size) {
+        val key = arr[i]
+        var j = i - 1
+
+      
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j]
+            j--
         }
+        arr[j + 1] = key
     }
 }
 
 fun main() {
-    val numbers: IntArray = intArrayOf(10, 20, 30, 40, 50,54,3253,236,2,2)
-    println("Before"+ numbers.joinToString  (","))
+    val arr = intArrayOf(12, 11, 13, 5, 6,43,234,26,2)
 
-    bubbleSort(numbers)
-    println("Sorted"+ numbers.joinToString  (","))
+    println("Original array: ${arr.joinToString()}")
 
+    insertionSort(arr)
+
+    println("Sorted array: ${arr.joinToString()}")
 }
