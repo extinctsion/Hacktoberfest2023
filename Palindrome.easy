@@ -1,34 +1,27 @@
-//code for checking that given string is palindrome or not
-
 import java.util.Scanner;
 
 public class PalindromeChecker {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a string: ");
-        String input = scanner.nextLine();
-        
-        if (isPalindrome(input)) {
-            System.out.println("It's a palindrome!");
-        } else {
-            System.out.println("It's not a palindrome.");
-        }
-    }
 
-    public static boolean isPalindrome(String str) {
-        str = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        int left = 0;
-        int right = str.length() - 1;
-        
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
+        // Take input from user
+        System.out.print("Enter a word or number: ");
+        String originalText = scanner.nextLine();
+
+        // Normalize input (ignore case, remove spaces)
+        String cleanedText = originalText.replaceAll("\\s+", "").toLowerCase();
+
+        // Reverse the cleaned text
+        String reversedText = new StringBuilder(cleanedText).reverse().toString();
+
+        // Check palindrome condition
+        if (cleanedText.equals(reversedText)) {
+            System.out.println("✅ The input \"" + originalText + "\" is a palindrome.");
+        } else {
+            System.out.println("❌ The input \"" + originalText + "\" is not a palindrome.");
         }
-        
-        return true;
+
+        scanner.close();
     }
 }
-    
