@@ -21,11 +21,11 @@ The system will automaticall exclude your PR and mark it excluded.
 
 <img src="https://img.shields.io/badge/hacktoberfest-2023-blueviolet" alt="Hacktober Badge"/>
  <img src="https://img.shields.io/static/v1?label=%F0%9F%8C%9F&message=If%20Useful&style=style=flat&color=BC4E99" alt="Star Badge"/>
- <a href="https://github.com/ossamamehmood" ><img src="https://img.shields.io/badge/Contributions-welcome-violet.svg?style=flat&logo=git" alt="Contributions" /></a>
+ <a href="https://github.com/extinctison" ><img src="https://img.shields.io/badge/Contributions-welcome-violet.svg?style=flat&logo=git" alt="Contributions" /></a>
 
-<a href="https://github.com/ossamamehmood/hacktoberfest2023/pulls"><img src="https://img.shields.io/github/issues-pr/ossamamehmood/hacktoberfest2023" alt="Pull Requests Badge"/></a>
-<a href="https://github.com/ossamamehmood/hacktoberfest2023/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/ossamamehmood/hacktoberfest2023?color=2b9348"></a>
-<a href="https://github.com/ossamamehmood/hacktoberfest2023/blob/master/LICENSE"><img src="https://img.shields.io/github/license/ossamamehmood/hacktoberfest2023?color=2b9348" alt="License Badge"/></a>
+<a href="https://github.com/extinctsion/Hacktoberfest2023/pulls"><img src="https://img.shields.io/github/issues-pr/extinctsion/Hacktoberfest2023" alt="Pull Requests Badge"/></a>
+<a href="https://github.com/extinctsion/Hacktoberfest2023/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/extinctsion/Hacktoberfest2023?color=2b9348"></a>
+<a href="https://github.com/extinctsion/Hacktoberfest2023/blob/master/LICENSE"><img src="https://img.shields.io/github/license/extinctsion/Hacktoberfest2023?color=2b9348" alt="License Badge"/></a>
 
 </div>
 
@@ -51,7 +51,7 @@ Add a picture of your choice in `static/images/`. Accepted files are **png** and
 ```
 static/images/<YOUR-USERNAME>.png
 
-![owais](https://github.com/syedowaisalishah/Hacktoberfest2023/assets/113125582/29d03bdc-3d4f-42c6-a3ea-15197bd26440)
+![example](https://github.com/extinctsion/Hacktoberfest2023/assets/000000000/placeholder)
 ```
 
 
@@ -71,7 +71,7 @@ Copy the next template into your file, delete the boilerplate data, and fill in 
 ```
 name: Your Name
 institution/company: Your Company Name or Institute
-github:[**username**](https://github.com/username)
+github:[**extinctison**](https://github.com/extinctison)
 
 ```
 
