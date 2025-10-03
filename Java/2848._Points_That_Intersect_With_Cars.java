@@ -1,4 +1,4 @@
-// https://leetcode.com/problems/points-that-intersect-with-cars/description/
+//https://leetcode.com/problems/points-that-intersect-with-cars/description/
 
 class Solution {
     public int numberOfPoints(List<List<Integer>> nums) {
