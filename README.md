@@ -99,21 +99,17 @@ You can follow any pathway a `code` or `profile information`
 ## 5. Celebrate - you've done your first pull request!!
 
 ```py
-'''
-Always make more than 4 pull requests.
-Let's say you have made only 4 pull requests to different projects,
+Always make more than 6 pull requests.
+Let's say you have made only 6 pull requests to different projects,
 but one project is excluded from hackoctoberfest event then your pull request will not be counted and 
-then you have the remaining 3 valid pull requests if these projects are not excluded.
-If you fail to make 4 pull requests then you can't get digital swags.
+then you have the remaining 5 valid pull requests if these projects are not excluded.
+If you fail to make 6 pull requests then you can't get digital swags.
 I will recommend you make a pull request to your own repo which is very very safe for you.
 keep in mind that the repository has hacktoberfest topics.
-'''
 ```
 
 ## + Follow Me :  Quick Approval of Pull Request
 
 ```py
-'''
 To get approval of the pull request much quicker and faster (`Follow Me`)🚀
-'''
 ```
