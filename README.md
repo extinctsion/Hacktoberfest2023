@@ -1,5 +1,6 @@
+## This repository is excluded from hacktoberfest, You can contribute to these beginner friendly issue from this [repo](https://github.com/extinctsion/awesome-resources)
+
 # HacktoberFest 2023 `OPEN FIRST` Pull Request 🎉
-![HacktoberFest 2023](https://github.com/extinctsion/Hacktoberfest2023)
 
 ## BEWARE
 
