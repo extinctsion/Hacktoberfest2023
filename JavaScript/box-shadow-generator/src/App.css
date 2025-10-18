@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+
+body{
+  background: linear-gradient(45deg, #24cff3, #4ed38f);
+  font-family: 'Lato', sans-serif;
+}
+.App{
+  height: 70vh;
+}
+.container{
+  margin-top: 3rem !important;
+}
+.row{
+  margin-top: 7rem !important;
+}
+.box{
+  height: 300px;
+  background-color: blueviolet;
+}
+h1{
+  font-weight: 900;
+}
+.outputP{
+  font-size: 20px;
+  color: white;
+}
+
+@media screen and (max-width:768px) {
+
+  .box{
+    margin-top: 4rem !important;
+  }
+  .row{
+    margin-top: 2rem !important;
+    padding-bottom: 5rem !important;
+
+  }
+
+  
+}
