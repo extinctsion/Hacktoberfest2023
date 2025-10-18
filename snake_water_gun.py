@@ -57,5 +57,5 @@ else:
     print()
     print("YOU LOSE THE GAME")
     print(f'YOUR SCORE:{l} v/s COMPUTER SCORE:{c}')
-    print()
+    print("")
 
