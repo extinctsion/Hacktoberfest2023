@@ -49,10 +49,10 @@ while user!=-1:
     user=int(input("Enter: 1 for snake,2 for water, 3 for Gun : "))
 
 if l>c:
-    print()
+    print("")
     print("YOU WIN THE GAME")
     print(f'YOUR SCORE:{l} v/s COMPUTER SCORE:{c}')
-    print()
+    print("")
 else:
     print("")
     print("YOU LOSE THE GAME")
