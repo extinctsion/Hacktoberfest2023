@@ -1,3 +1,5 @@
+import java.util.Arrays; // ✅ Added this line
+
 public class BubbleSort {
 
     public static void bubbleSort(int[] arr) {
