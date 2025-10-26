@@ -2,7 +2,7 @@ public class BinarySearch {
     public static void search(int arr[],int key,int s,int e){
         // int s=0;
         // int e=arr.length-1;
-        int m=(s+e)/2;
+        int m=(s-e)/2;
         while(s<=e){
             if(arr[m]==key){
                 System.out.println("Element found at index = "+ m);
@@ -15,7 +15,6 @@ public class BinarySearch {
             else{
                 e=m-1;
             }
-            m=(s+e)/2;
         }
     }
     public static void main(String[] args) {
