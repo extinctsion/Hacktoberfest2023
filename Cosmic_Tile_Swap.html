@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Tile Swap</title>
+    <!-- Load Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- Load Orbitron font for arcade look -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    </style>
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        'space-dark': '#0f172a', /* slate-900 */
+                        'gem-red': '#ef4444', /* red-500 */
+                        'gem-blue': '#3b82f6', /* blue-500 */
+                        'gem-green': '#10b981', /* emerald-500 */
+                        'gem-yellow': '#fcd34d', /* amber-300 */
+                        'gem-purple': '#a855f7', /* violet-500 */
+                        'board-bg': '#1e293b', /* slate-800 */
+                        'highlight': '#f59e0b', /* amber-500 */
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom Game CSS -->
+    <style>
+        /* Base styles for the "Cosmic Tile Swap" theme */
+        body {
+            background-color: #0f172a; 
+            color: #fcd34d; 
+            font-family: 'Orbitron', sans-serif;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Game Board Container */
+        #game-board {
+            width: 95%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1; /* Ensure square aspect ratio */
+            border: 5px solid #a855f7;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.7); 
+            background-color: #1e293b; 
+            margin: 1rem auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            border-radius: 10px;
+        }
+        
+        /* Individual Tile */
+        .tile {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.1s;
+        }
+
+        .tile-content {
+            width: 80%;
+            height: 80%;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s;
+        }
+        
+        /* Tile Highlight (for first selection) */
+        .selected-tile {
+            box-shadow: 0 0 0 3px #fcd34d, 0 0 20px #fcd34d;
+            z-index: 10; /* Bring selected tile to front */
+        }
+
+        /* Tile Color Classes (using Tailwind colors) */
+        .type-0 { background-color: #ef4444; color: white; } /* Red */
+        .type-1 { background-color: #3b82f6; color: white; } /* Blue */
+        .type-2 { background-color: #10b981; color: white; } /* Green */
+        .type-3 { background-color: #fcd34d; color: #0f172a; } /* Yellow */
+        .type-4 { background-color: #a855f7; color: white; } /* Purple */
+
+        /* Button styling */
+        .game-button {
+            font-size: 1.25rem;
+            padding: 0.75rem 2rem;
+            cursor: pointer;
+            border: 2px solid #a855f7;
+            background: #1f2937;
+            color: #a855f7;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            transition: all 0.15s ease-in-out;
+        }
+
+        .game-button:hover:not(:disabled) {
+            background: #a855f7;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+        }
+
+        .game-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .game-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="p-4 flex flex-col items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-4xl flex flex-col items-center">
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-highlight tracking-wider text-shadow-xl text-center">
+            🔮 COSMIC TILE SWAP 💎
+        </h1>
+
+        <!-- Score/Level Display -->
+        <div class="w-full max-w-[500px] flex justify-between text-xl sm:text-2xl font-mono p-4 rounded-lg bg-gray-800 border-2 border-gray-700 shadow-lg mb-4">
+            <span>LEVEL: <span id="level-display" class="text-highlight">1</span></span>
+            <span>SCORE: <span id="score-display" class="text-gem-green">0</span></span>
+        </div>
+
+        <!-- Game Board Area -->
+        <div id="game-board">
+            <!-- Tiles will be dynamically injected here -->
+        </div>
+        
+        <!-- Controls (Start/Stop) -->
+        <div class="flex space-x-4 mt-6">
+            <button id="start-button" class="game-button rounded-full">
+                Start Core Stabilizer
+            </button>
+            <button id="stop-button" class="game-button rounded-full hidden bg-red-800 border-red-500 text-red-300 hover:bg-red-500 hover:text-white" disabled>
+                Stop Game
+            </button>
+        </div>
+
+        <!-- Timer/Status Message -->
+        <div class="w-full max-w-[500px] text-center mt-4">
+            <p id="timer-display" class="text-2xl font-bold text-gem-yellow">Ready</p>
+        </div>
+
+        <!-- Game Over / Start Message Modal -->
+        <div id="message-modal" class="hidden fixed inset-0 bg-space-dark bg-opacity-90 z-20 items-center justify-center" onclick="hideMessage()">
+            <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-4 border-highlight max-w-md w-full mx-4" onclick="event.stopPropagation()">
+                <h2 id="modal-title" class="text-3xl font-bold mb-4 text-highlight">Welcome Pilot</h2>
+                <p id="modal-message" class="text-gray-300 mb-6 text-lg">Swap adjacent tiles to match 3 or more of the same color/symbol in a row or column. Earn points and stabilize the core!</p>
+                
+                <button class="game-button rounded-lg w-full" onclick="hideMessage()">Start</button>
+            </div>
+        </div>
+
+        <!-- Signature/Credit -->
+        <p class="text-xs text-gray-500 mt-6 tracking-widest uppercase">
+            Code Signature: abhijat sarari
+        </p>
+    </div>
+
+    <!-- JavaScript Game Logic -->
+    <script>
+        // Global Game Variables
+        const BOARD_SIZE = 5;
+        const TILE_TYPES = 5; // 0 (Red) to 4 (Purple)
+        const SYMBOLS = ['★', '▲', '◆', '●', '■'];
+        
+        let score = 0;
+        let level = 1;
+        let isGameRunning = false;
+        let gameBoard = []; // 2D array of tile types
+        let selectedTile = null; // { row, col, element }
+        let timer = 60; // seconds
+        let timerInterval;
+
+        // DOM Elements
+        const boardElement = document.getElementById('game-board');
+        const timerDisplay = document.getElementById('timer-display');
+
+        // --- Tone.js Setup for sounds ---
+        let swapSynth, matchSynth, refillSynth;
+        
+        function initAudio() {
+            try {
+                if (!swapSynth) {
+                    Tone.start();
+                    // Synth for successful swap
+                    swapSynth = new Tone.PluckSynth().toDestination();
+                    
+                    // Synth for successful match
+                    matchSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+                    matchSynth.set({
+                        oscillator: { type: "sine" },
+                        envelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 }
+                    });
+                    
+                    // Synth for refill (new tiles)
+                    refillSynth = new Tone.MembraneSynth().toDestination();
+                }
+            } catch (e) {
+                console.error("Tone.js failed to initialize:", e);
+            }
+        }
+
+        // Sound functions
+        function playSwapSound() {
+            if (swapSynth) { swapSynth.triggerAttackRelease("C4", "8n"); }
+        }
+
+        function playMatchSound() {
+            if (matchSynth) { matchSynth.triggerAttackRelease(["E5", "G5", "C6"], "8n"); }
+        }
+
+        function playRefillSound() {
+            if (refillSynth) { refillSynth.triggerAttackRelease("C2", "16n"); }
+        }
+
+        // --- Game Initialization ---
+
+        function generateTile() {
+            return Math.floor(Math.random() * TILE_TYPES);
+        }
+
+        function generateBoard() {
+            gameBoard = [];
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                gameBoard[r] = [];
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    // Generate tiles, ensuring no immediate 3-in-a-row
+                    let tileType;
+                    do {
+                        tileType = generateTile();
+                    } while (
+                        (r >= 2 && tileType === gameBoard[r - 1][c] && tileType === gameBoard[r - 2][c]) ||
+                        (c >= 2 && tileType === gameBoard[r][c - 1] && tileType === gameBoard[r][c - 2])
+                    );
+                    gameBoard[r][c] = tileType;
+                }
+            }
+        }
+
+        function drawBoard() {
+            boardElement.innerHTML = '';
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    const tileType = gameBoard[r][c];
+                    const tileDiv = document.createElement('div');
+                    tileDiv.classList.add('tile');
+                    tileDiv.dataset.row = r;
+                    tileDiv.dataset.col = c;
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.classList.add('tile-content', `type-${tileType}`);
+                    contentDiv.textContent = SYMBOLS[tileType];
+                    
+                    tileDiv.appendChild(contentDiv);
+                    tileDiv.addEventListener('click', handleTileClick);
+                    boardElement.appendChild(tileDiv);
+                }
+            }
+        }
+
+        // --- Tile Interaction ---
+
+        function isAdjacent(tile1, tile2) {
+            const dr = Math.abs(tile1.row - tile2.row);
+            const dc = Math.abs(tile1.col - tile2.col);
+            return (dr === 1 && dc === 0) || (dr === 0 && dc === 1);
+        }
+
+        function getTileElement(r, c) {
+            return boardElement.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+        }
+
+        function deselectTile() {
+            if (selectedTile) {
+                selectedTile.element.classList.remove('selected-tile');
+                selectedTile = null;
+            }
+        }
+
+        async function handleTileClick(event) {
+            if (!isGameRunning) return;
+
+            const r = parseInt(event.currentTarget.dataset.row);
+            const c = parseInt(event.currentTarget.dataset.col);
+            const clickedTile = { row: r, col: c, element: event.currentTarget };
+
+            if (!selectedTile) {
+                // First tile selection
+                selectedTile = clickedTile;
+                clickedTile.element.classList.add('selected-tile');
+            } else if (selectedTile.row === r && selectedTile.col === c) {
+                // Clicking the same tile deselects it
+                deselectTile();
+            } else if (isAdjacent(selectedTile, clickedTile)) {
+                // Second tile selection (adjacent, ready to swap)
+                boardElement.style.pointerEvents = 'none'; // Lock input during animation
+                deselectTile();
+                await trySwap(selectedTile, clickedTile);
+                boardElement.style.pointerEvents = 'auto'; // Unlock input
+            } else {
+                // Second tile selection (not adjacent, restart selection)
+                deselectTile();
+                selectedTile = clickedTile;
+                clickedTile.element.classList.add('selected-tile');
+            }
+        }
+
+        async function trySwap(tile1, tile2) {
+            // 1. Perform temporary swap in the data model
+            [gameBoard[tile1.row][tile1.col], gameBoard[tile2.row][tile2.col]] = 
+            [gameBoard[tile2.row][tile2.col], gameBoard[tile1.row][tile1.col]];
+            
+            // 2. Animate the swap visually
+            playSwapSound();
+            
+            // Re-render to visualize the swap instantly (simplest approach for single file)
+            drawBoard(); 
+            
+            // 3. Check for matches
+            const matches = findMatches();
+
+            if (matches.length > 0) {
+                // Valid swap: clear matches, refill, and cascade
+                await processMatches(matches);
+            } else {
+                // Invalid swap: swap back after a delay
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                // Swap back in data model
+                [gameBoard[tile1.row][tile1.col], gameBoard[tile2.row][tile2.col]] = 
+                [gameBoard[tile2.row][tile2.col], gameBoard[tile1.row][tile1.col]];
+
+                // Re-render to swap back
+                drawBoard(); 
+            }
+        }
+
+        function findMatches() {
+            const matches = [];
+            const checked = new Set();
+            
+            // Check rows
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE - 2; c++) {
+                    const type = gameBoard[r][c];
+                    if (type === gameBoard[r][c+1] && type === gameBoard[r][c+2]) {
+                        for (let i = 0; i < 3; i++) {
+                            const key = `${r},${c + i}`;
+                            if (!checked.has(key)) {
+                                matches.push({ r, c: c + i });
+                                checked.add(key);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Check columns
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                for (let r = 0; r < BOARD_SIZE - 2; r++) {
+                    const type = gameBoard[r][c];
+                    if (type === gameBoard[r+1][c] && type === gameBoard[r+2][c]) {
+                         for (let i = 0; i < 3; i++) {
+                            const key = `${r + i},${c}`;
+                            if (!checked.has(key)) {
+                                matches.push({ r: r + i, c });
+                                checked.add(key);
+                            }
+                        }
+                    }
+                }
+            }
+            return matches;
+        }
+
+        async function processMatches(matches) {
+            if (matches.length === 0) return;
+
+            playMatchSound();
+            
+            // Mark tiles for deletion (e.g., set type to -1)
+            matches.forEach(m => {
+                gameBoard[m.r][m.c] = -1;
+            });
+
+            // Score calculation (basic: 10 points per matched tile)
+            score += matches.length * 10 * level;
+            updateScoreDisplay();
+
+            // Visual removal
+            drawBoard(); // Redraws board with invisible (-1) tiles temporarily
+            await new Promise(resolve => setTimeout(resolve, 400)); // Delay for effect
+
+            // Apply gravity and refill
+            applyGravity();
+            refillBoard();
+            drawBoard();
+            playRefillSound();
+            
+            // Check for cascades (new matches formed by falling tiles)
+            const cascadeMatches = findMatches();
+            if (cascadeMatches.length > 0) {
+                // Recurse to handle cascades
+                await new Promise(resolve => setTimeout(resolve, 300)); 
+                await processMatches(cascadeMatches);
+            }
+        }
+        
+        function applyGravity() {
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                let emptySpots = 0;
+                for (let r = BOARD_SIZE - 1; r >= 0; r--) {
+                    if (gameBoard[r][c] === -1) {
+                        emptySpots++;
+                    } else if (emptySpots > 0) {
+                        // Move the tile down
+                        gameBoard[r + emptySpots][c] = gameBoard[r][c];
+                        gameBoard[r][c] = -1; // Leave the old spot empty
+                    }
+                }
+            }
+        }
+
+        function refillBoard() {
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                for (let r = 0; r < BOARD_SIZE; r++) {
+                    if (gameBoard[r][c] === -1) {
+                        // Fill empty spots at the top
+                        gameBoard[r][c] = generateTile();
+                    }
+                }
+            }
+        }
+        
+        // --- Game Flow and Loop ---
+
+        function gameTick() {
+            if (!isGameRunning) return;
+
+            timer -= 1;
+            timerDisplay.textContent = `Time Left: ${timer}s`;
+
+            if (timer <= 10) {
+                timerDisplay.classList.add('text-gem-red');
+            } else {
+                timerDisplay.classList.remove('text-gem-red');
+            }
+
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                endGame("CORE FAILED", `Time ran out! You stabilized the core up to Level ${level} with a score of ${score}.`);
+            }
+        }
+
+        // --- UI and Modal ---
+
+        function updateButtonStates(isStarting) {
+            document.getElementById('start-button').disabled = isStarting;
+            document.getElementById('stop-button').disabled = !isStarting;
+            boardElement.style.pointerEvents = isStarting ? 'auto' : 'none';
+
+            if (isStarting) {
+                 document.getElementById('start-button').textContent = "STABILIZING...";
+                 document.getElementById('stop-button').classList.remove('hidden');
+            } else {
+                 document.getElementById('start-button').textContent = "Restart Stabilizer";
+                 document.getElementById('stop-button').classList.add('hidden');
+            }
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-display').textContent = score;
+            document.getElementById('level-display').textContent = level;
+        }
+
+        function showMessage(title, message) {
+            const modal = document.getElementById('message-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideMessage() {
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function endGame(title, message) {
+            if (!isGameRunning) return;
+
+            isGameRunning = false;
+            clearInterval(timerInterval);
+            
+            showMessage(title, message);
+
+            updateButtonStates(false);
+        }
+
+        function startGame() {
+            // Initialize audio on first click interaction
+            initAudio();
+
+            // Reset state
+            score = 0;
+            level = 1;
+            timer = 60;
+            selectedTile = null;
+            isGameRunning = true;
+            
+            generateBoard();
+            drawBoard();
+            
+            updateScoreDisplay();
+            hideMessage();
+            updateButtonStates(true);
+            
+            // Start timer
+            clearInterval(timerInterval);
+            timerInterval = setInterval(gameTick, 1000);
+            gameTick(); // Call once immediately
+        }
+
+        // --- Event Listeners and Initial Setup ---
+
+        window.onload = function() {
+            // Event listeners
+            document.getElementById('start-button').addEventListener('click', startGame);
+            document.getElementById('stop-button').addEventListener('click', () => endGame("CORE SHUTDOWN", `Manual shutdown initiated. Final Score: ${score}, Level: ${level}`));
+            
+            // Initial UI setup
+            generateBoard(); // Generate initial board for display
+            drawBoard(); 
+            updateButtonStates(false);
+            timerDisplay.textContent = "Ready";
+            showMessage("Welcome Pilot", "Swap adjacent tiles to match 3 or more of the same color/symbol in a row or column. Earn points and stabilize the core!");
+        };
+    </script>
+</body>
+</html>
